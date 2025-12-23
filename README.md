@@ -51,9 +51,3 @@ Traditional encryption requires computers to decrypt. VisCrypto splits a secret 
     Go to `http://127.0.0.1:5000`
 
 ---
-
-## 👥 Authors
-* **[Your Name]** - *Lead Developer*
-* **[Teammate Name]** - *Documentation & Testing*
-
----
