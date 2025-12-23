@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisCrypto Pro | Enterprise Visual Security</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+<body>
+
+    <div class="mesh-background">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav class="navbar glass">
+        <div class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-layer-group"></i></div>
+            <span>VisCrypto<span class="highlight">.io</span></span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#tool">Studio</a></li>
+            <li><a href="#process">Workflow</a></li>
+            <li><a href="#specs">Specifications</a></li>
+        </ul>
+        <a href="#tool" class="nav-btn">Launch App</a>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-text animate__animated animate__fadeInUp">
+            <span class="badge">v2.0 Stable Release</span>
+            <h1>Encryption for the <br><span class="gradient-text">Human Eye.</span></h1>
+            <p>Securely split sensitive data into random noise layers. Decrypt instantly by overlaying transparency sheets. No computers required for retrieval.</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <strong>(2, 2)</strong>
+                    <span>VCS Scheme</span>
+                </div>
+                <div class="stat">
+                    <strong>100%</strong>
+                    <span>Info-Theoretic Security</span>
+                </div>
+                <div class="stat">
+                    <strong>0ms</strong>
+                    <span>Latency</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="tool" class="app-section">
+        <div class="app-container glass">
+            
+            <div class="app-sidebar">
+                <h3>Menu</h3>
+                <button id="btn-encrypt" class="sidebar-btn active" onclick="switchTab('encrypt-tab')">
+                    <i class="fa-solid fa-lock"></i> Encrypt Data
+                </button>
+                <button id="btn-decrypt" class="sidebar-btn" onclick="switchTab('decrypt-tab')">
+                    <i class="fa-solid fa-unlock-keyhole"></i> Recover Data
+                </button>
+                
+                <div class="console-log" id="console-log">
+                    <p>> System Ready...</p>
+                    <p>> Waiting for input...</p>
+                </div>
+            </div>
+
+            <div class="app-workspace">
+                
+                <div id="encrypt-tab" class="panel active">
+                    <div class="panel-header">
+                        <h2>Encryption Studio</h2>
+                        <p>Generate secure visual shares from any image source.</p>
+                    </div>
+
+                    <form action="/encrypt" method="post" enctype="multipart/form-data" onsubmit="runConsole(this)">
+                        <div class="settings-grid">
+                            <div class="setting-box">
+                                <label>Optimization Engine</label>
+                                <select name="optimization" class="custom-select">
+                                    <option value="text">Typography (High Contrast)</option>
+                                    <option value="photo">Photography (Dithering)</option>
+                                </select>
+                            </div>
+                            <div class="setting-box">
+                                <label>Input Source</label>
+                                <label class="file-card">
+                                    <input type="file" name="file" required accept="image/*">
+                                    <div class="icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                                    <div class="text">
+                                        <strong>Click to Upload</strong>
+                                        <span>PNG, JPG supported</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="primary-btn">
+                            Initialize Encryption <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </form>
+
+                    {% if mode == 'encrypt_success' %}
+                    <div class="result-dash animate__animated animate__fadeIn">
+                        <div class="visual-test">
+                            <div class="crypto-stage">
+                                <img src="{{ share1 }}" class="share-layer">
+                                <img src="{{ share2 }}" id="share2" class="share-layer">
+                            </div>
+                            <p class="caption"><i class="fa-solid fa-hand-pointer"></i> Drag red box to verify</p>
+                        </div>
+                        <div class="download-actions">
+                            <a href="/download/share1.png" class="dl-card">
+                                <i class="fa-solid fa-file-shield"></i>
+                                <span>Download<br><strong>Share 1</strong></span>
+                            </a>
+                            <a href="/download/share2.png" class="dl-card">
+                                <i class="fa-solid fa-file-shield"></i>
+                                <span>Download<br><strong>Share 2</strong></span>
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div id="decrypt-tab" class="panel">
+                    <div class="panel-header">
+                        <h2>Recovery Studio</h2>
+                        <p>Reconstruct original data from two valid shares.</p>
+                    </div>
+
+                    <form action="/decrypt" method="post" enctype="multipart/form-data" onsubmit="runConsole(this)">
+                        <div class="upload-row">
+                            <label class="mini-upload">
+                                <input type="file" name="share1" required>
+                                <span><i class="fa-solid fa-1"></i> Upload Share 1</span>
+                            </label>
+                            <label class="mini-upload">
+                                <input type="file" name="share2" required>
+                                <span><i class="fa-solid fa-2"></i> Upload Share 2</span>
+                            </label>
+                        </div>
+                        <button type="submit" class="secondary-btn">
+                            Run Decryption Sequence
+                        </button>
+                    </form>
+
+                    {% if mode == 'decrypt_success' %}
+                    <div class="result-dash animate__animated animate__fadeIn">
+                        <div class="success-banner">
+                            <i class="fa-solid fa-check-circle"></i> Decryption Successful
+                        </div>
+                        <img src="{{ result }}" class="final-result">
+                        <a href="/download/recovered_secret.png" class="primary-btn full-width">Save Recovered Image</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="process" class="process-section">
+        <div class="section-header">
+            <h2>The Workflow</h2>
+            <p>How Visual Cryptography secures your data</p>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-icon">01</div>
+                <h3>Input Analysis</h3>
+                <p>Image is converted to a binary matrix. Thresholding algorithms determine pixel density.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-icon">02</div>
+                <h3>Share Splitting</h3>
+                <p>Every pixel is expanded into 2x2 sub-pixels. Randomness is injected using Naor-Shamir Logic.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-icon">03</div>
+                <h3>Physical Overlay</h3>
+                <p>Shares are printed or stacked digitally. The Human Visual System (HVS) performs the OR operation.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="specs" class="specs-section">
+        <div class="specs-container">
+            <h2>Technical Specifications</h2>
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <i class="fa-brands fa-python"></i>
+                    <h4>Backend</h4>
+                    <p>Python 3.10 + Flask</p>
+                </div>
+                <div class="spec-item">
+                    <i class="fa-solid fa-microchip"></i>
+                    <h4>Processing</h4>
+                    <p>NumPy Vectorization</p>
+                </div>
+                <div class="spec-item">
+                    <i class="fa-solid fa-image"></i>
+                    <h4>Imaging</h4>
+                    <p>Pillow (PIL) Fork</p>
+                </div>
+                <div class="spec-item">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h4>Security</h4>
+                    <p>(2,2) Secret Sharing</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <p><strong>VisCrypto Project</strong> &copy; 2025</p>
+            <p>Department of Computer Science & Engineering</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% if 'decrypt' in mode %}
+    <script>switchTab('decrypt-tab');</script>
+    {% endif %}
+
+</body>
+</html>
